@@ -57,16 +57,11 @@ if (isset($_GET['code'])) {
             $nombre = $user_data['name'];
             $google_id = $user_data['id'];
             
-            if ($usuarioController->guardarUsuario($email, $nombre, $google_id)){
-                echo 'Usuario registrado exitosamente en la base de datos.';
-            } else {
-                echo 'Usuario ya registrado en la base de datos.';
-            }
+            $usuarioController->guardarUsuario($email, $nombre, $google_id);
 
-            // Validación exitosa
-            echo 'Inicio de sesión exitoso. Bienvenido, ' . htmlspecialchars($user_data['name']) . '!';
-            echo '<br><a href="../../public/Libros.php">Buscar Libros</a>';
-            echo '<br><a href="../../public/Logout.php">Cerrar sesión</a>';
+            header('Location: ../../public/Perfil.php');
+            exit();
+
         } else {
             echo 'Error al obtener la información del usuario.';
         }
