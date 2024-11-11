@@ -52,6 +52,7 @@ if (isset($_GET['code'])) {
 
             // Validación exitosa
             echo 'Inicio de sesión exitoso. Bienvenido, ' . htmlspecialchars($user_data['name']) . '!';
+            echo '<br><a href="../../public/Libros.php">Buscar Libros</a>';
             echo '<br><a href="../../public/Logout.php">Cerrar sesión</a>';
         } else {
             echo 'Error al obtener la información del usuario.';
