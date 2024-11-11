@@ -5,10 +5,10 @@
     define('DB_PASSWORD', 'parcial4');
     define('DB_NAME', 'biblioteca');
 
-    $conn = mysqli_connect(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_NAME);
+    $mysqli  = new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_NAME);
 
-    if($conn === false){
-        die("ERROR: no se establecio la conexion. " . mysqli_connect_error());
+    if($mysqli->connect_error){
+        die("ERROR: " . $mysqli->connect_error);
     }
 
 ?>

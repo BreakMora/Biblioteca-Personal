@@ -1,6 +1,8 @@
 <?php
 // Inicia una sesión de PHP
 session_start();
+require_once 'UsuarioController.php';
+require_once '../config/Config.php';
 
 // Información del cliente de Google (ID de cliente y secreto)
 $client_id = '';
@@ -49,6 +51,17 @@ if (isset($_GET['code'])) {
         if (isset($user_data['email'])) {
             // Guardar información del usuario en la sesión
             $_SESSION['user'] = $user_data;
+
+            $usuarioController = new UsuarioController($mysqli);
+            $email = $user_data['email'];
+            $nombre = $user_data['name'];
+            $google_id = $user_data['id'];
+            
+            if ($usuarioController->guardarUsuario($email, $nombre, $google_id)){
+                echo 'Usuario registrado exitosamente en la base de datos.';
+            } else {
+                echo 'Usuario ya registrado en la base de datos.';
+            }
 
             // Validación exitosa
             echo 'Inicio de sesión exitoso. Bienvenido, ' . htmlspecialchars($user_data['name']) . '!';
