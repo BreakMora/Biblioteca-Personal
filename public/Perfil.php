@@ -2,6 +2,7 @@
 
     session_start();
     require_once '../src/config/Config.php';
+    require_once '../src/controllers/LibroController.php';
 
     if (!isset($_SESSION['user'])) {
         header('Location: Login.php');
@@ -23,8 +24,24 @@
         exit();
     }
 
+    // Crear una instancia del controlador de libros
+    $libroController = new LibroController();
+
+    // Si se recibe una solicitud para eliminar un libro
+    if (isset($_POST['libro_id'])) {
+        $libro_id = $_POST['libro_id'];
+
+        // Llamamos al método para eliminar el libro
+        if ($libroController->eliminarLibro($libro_id, $id)) {
+            header('Location: Perfil.php');  // Redirigir al perfil después de eliminar
+            exit();
+        } else {
+            echo "Hubo un problema al eliminar el libro.";
+        }
+    }
+
     // Consulta para obtener los libros asociados al usuario autenticado
-    $stmtLibros = $mysqli->prepare("SELECT google_books_id, titulo, autor, imagen_portada, reseña_personal, fecha_guardado FROM libros_guardados WHERE user_id = ?");
+    $stmtLibros = $mysqli->prepare("SELECT id, google_books_id, titulo, autor, imagen_portada, reseña_personal, fecha_guardado FROM libros_guardados WHERE user_id = ?");
     $stmtLibros->bind_param("i", $id);
     $stmtLibros->execute();
     $resultLibros = $stmtLibros->get_result();
@@ -56,6 +73,12 @@
                         <img src="<?php echo htmlspecialchars($libro['imagen_portada']); ?>" alt="Portada de <?php echo htmlspecialchars($libro['titulo']); ?>" style="max-width: 150px;">
                     <?php endif; ?>
                     <p><strong>Reseña Personal:</strong> <?php echo htmlspecialchars($libro['reseña_personal']); ?></p>
+
+                    <!-- Formulario para borrar libro de la biblioteca -->
+                    <form method="POST" action="Perfil.php">
+                        <input type="hidden" name="libro_id" value="<?php echo htmlspecialchars($libro['id']); ?>">
+                        <button type="submit">Borrar de mi biblioteca</button>
+                    </form>
                 </li>
             <?php endwhile; ?>
         </ul>

@@ -20,4 +20,20 @@ class LibroController {
             return false;  // Error al agregar el libro
         }
     }
+
+    // Método para eliminar un libro de la biblioteca personal del usuario
+    public function eliminarLibro($libro_id, $user_id) {
+        global $mysqli;  // Accedemos a la conexión a la base de datos desde el archivo de configuración
+
+        // Verificamos si el libro pertenece al usuario antes de eliminarlo
+        $stmt = $mysqli->prepare("DELETE FROM libros_guardados WHERE id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $libro_id, $user_id);
+
+        // Ejecutar la consulta y verificar el resultado
+        if ($stmt->execute()) {
+            return true;  // Libro eliminado con éxito
+        } else {
+            return false;  // Error al eliminar el libro
+        }
+    }
 }
