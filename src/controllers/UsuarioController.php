@@ -1,35 +1,33 @@
 <?php
 
-require_once '../config/Config.php';
+require_once (__DIR__ . '/../models/Usuario.php'); // Incluimos models de Usuario
 
     class UsuarioController {
-        private $db;
+        private $usuario;
 
-        public function __construct($mysqli){
-            $this->db = $mysqli;
+        public function __construct($conn) {
+            $this->usuario = new Usuario($conn); // Crear una instancia del modelo Usuario
         }
 
-        public function Usuario_Existe($google_id){
-            $stmt = $this->db->prepare("SELECT id FROM usuarios WHERE google_id = ?");
-            $stmt->bind_param("s", $google_id);
-            $stmt->execute();
-            $stmt->store_result();
-            return $stmt->num_rows > 0;
+        // Verificar si el usuario existe
+        public function verificar_Usuario($google_id){
+            return $this->usuario->verificar_Usuario($google_id); // Llama al metodo Verificar_Usuario del modelo Usuario
         }
 
-        public function guardarUsuario($email, $nombre, $google_id){
-            if(!$this->Usuario_Existe($google_id)){
-                $stmt = $this->db->prepare("INSERT INTO usuarios (email, nombre, google_id) VALUES (?, ?, ?)");
-                $stmt->bind_param("sss", $email, $nombre, $google_id);
-                if($stmt->execute()){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            return false;
+         // Guarda un nuevo usuario si no existe en la base de datos
+        public function guardar_Usuario($email, $nombre, $google_id){
+            return $this->usuario->guardar_Usuario($email, $nombre, $google_id);  // Llama al método guardar_Usuario del modelo Usuario
         }
 
+        // Obtener el ID del usuario
+        public function get_Idusuario($google_id) {
+            return $this->usuario->get_Id_Usuario($google_id); // Llama al método get_Id_Usuario del modelo Usuario
+        }
+
+        // Obtener el datos del usuario
+        public function get_DatosUsuario($google_id) {
+            return $this->usuario->get_DatosUsuario($google_id); // Llama al método get_Id_Usuario del modelo Usuario
+        }
     }
 
 ?>

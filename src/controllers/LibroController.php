@@ -1,39 +1,50 @@
 <?php
 
-require_once(__DIR__ . '/../config/Config.php');  // Asegúrate de que la conexión a la base de datos esté incluida.
+require_once (__DIR__ . '/../models/Libro.php');
+require_once (__DIR__ . '/Google_BooksAPI.php');
 
 class LibroController {
 
-    // Método para agregar un libro a la biblioteca personal del usuario
-    public function agregarLibro($googleBooksId, $titulo, $autor, $imagen, $reseña, $user_id) {
-        global $mysqli;  // Accedemos a la conexión a la base de datos desde el archivo de configuración
+    public function __construct() {
+    
+    }
 
-        // Insertar el libro en la base de datos
-        $stmt = $mysqli->prepare("INSERT INTO libros_guardados (user_id, google_books_id, titulo, autor, imagen_portada, reseña_personal) 
-                                  VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isssss", $user_id, $googleBooksId, $titulo, $autor, $imagen, $reseña);
+    // Método para buscar libros en Google Books API
+    public function buscar_Libros($query) {
+        $googleBooksAPI = new GoogleBooksAPI();
+        $libros_data = $googleBooksAPI->buscar_Libros($query);
 
-        // Ejecutar la consulta y verificar el resultado
-        if ($stmt->execute()) {
-            return true;  // Libro agregado con éxito
-        } else {
-            return false;  // Error al agregar el libro
+        $libros = [];
+        if ($libros_data) {
+            foreach ($libros_data as $libro) {
+                // Se asegura de llamar a la respuesta de Google Books correctamente
+                $libros[] = Libros::respuesta_GoogleBooks($libro);
+            }
         }
+        return $libros;
+    }
+
+    // Método para agregar un libro a la biblioteca personal del usuario
+    public function agregar_Libro($conn, $googleBooksId, $titulo, $autor, $imagen, $resena, $user_id) {
+        // Se pasa el parámetro $conn correctamente y se crea la instancia de Libros
+        $libro = new Libros($conn, $googleBooksId, $titulo, $autor, null, null, $imagen, $resena);
+        
+        // Se envía el objeto al modelo para su inserción a la Base de Datos
+        return $libro->guardar_Libro($user_id);
     }
 
     // Método para eliminar un libro de la biblioteca personal del usuario
-    public function eliminarLibro($libro_id, $user_id) {
-        global $mysqli;  // Accedemos a la conexión a la base de datos desde el archivo de configuración
+    public function eliminar_Libro($conn, $libro_id, $user_id) {
+        // Uso el método del modelo para eliminar el libro
+        return Libros::eliminar_Libro($conn, $libro_id, $user_id);
+    }
 
-        // Verificamos si el libro pertenece al usuario antes de eliminarlo
-        $stmt = $mysqli->prepare("DELETE FROM libros_guardados WHERE id = ? AND user_id = ?");
-        $stmt->bind_param("ii", $libro_id, $user_id);
-
-        // Ejecutar la consulta y verificar el resultado
-        if ($stmt->execute()) {
-            return true;  // Libro eliminado con éxito
-        } else {
-            return false;  // Error al eliminar el libro
-        }
+    // Método para obtener los libros del usuario
+    public function obtenerLibros($conn, $user_id) {
+        // Consultar libros de la base de datos para un usuario específico
+        $stmt = $conn->prepare("SELECT id, google_books_id, titulo, autor, imagen_portada, reseña_personal, fecha_guardado FROM libros_guardados WHERE user_id = ?");
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        return $stmt->get_result();
     }
 }

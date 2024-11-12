@@ -52,12 +52,12 @@ if (isset($_GET['code'])) {
             // Guardar información del usuario en la sesión
             $_SESSION['user'] = $user_data;
 
-            $usuarioController = new UsuarioController($mysqli);
+            $usuarioController = new UsuarioController($conn);
             $email = $user_data['email'];
             $nombre = $user_data['name'];
             $google_id = $user_data['id'];
             
-            $usuarioController->guardarUsuario($email, $nombre, $google_id);
+            $usuarioController->guardar_Usuario($email, $nombre, $google_id);
 
             header('Location: ../../public/Perfil.php');
             exit();
