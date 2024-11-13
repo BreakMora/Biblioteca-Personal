@@ -42,48 +42,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espacio Personal</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Agregar tu archivo de estilos -->
+    <link rel="stylesheet" href="http://localhost/Parcial4_Desarrollo/Biblioteca-Personal/public/assets/Perfil.css">
 </head>
 <body>
 
-    <div class="header">
-        <a href="Logout.php">Cerrar sesión</a>
-        <a href="Libros.php">Buscar Libros</a>
-        <a href="Perfil.php">Perfil</a>
-    </div>
+    <header class="contenedor-navegacion">
+        <nav>
+            <a class="btn" href="Logout.php">Cerrar sesión</a>
+            <a class="btn" href="Libros.php">Buscar Libros</a>
+        </nav>
+    </header>
 
-    <h1>Bienvenido a tu espacio personal, <?php echo htmlspecialchars($nombre) . '!'; ?></h1>
+    <h3><br>Bienvenido, <?php echo htmlspecialchars($nombre) . '!'; ?></h3>
+    <h3>Biblioteca Personal</h3>
+    
+    <section class="contenedor-libros-guardados">
+        <?php if ($resultLibros->num_rows > 0): ?>
+                <?php while ($libro = $resultLibros->fetch_assoc()): ?>
+                    <div class="tarjeta-libro">
+                        <?php if ($libro['imagen_portada']): ?>
+                            <img src="<?php echo htmlspecialchars($libro['imagen_portada']); ?>" alt="Portada de <?php echo htmlspecialchars($libro['titulo']); ?>" class="portada-libro">
+                        <?php endif; ?>
 
-    <h2>Tu Biblioteca Personal</h2>
-
-    <?php if ($resultLibros->num_rows > 0): ?>
-        <div class="libros-container">
-            <?php while ($libro = $resultLibros->fetch_assoc()): ?>
-                <div class="libro">
-                    <h3><?php echo htmlspecialchars($libro['titulo']); ?></h3>
-                    <p><strong>Autor:</strong> <?php echo htmlspecialchars($libro['autor']); ?></p>
-                    <p><strong>Fecha de guardado:</strong> <?php echo htmlspecialchars($libro['fecha_guardado']); ?></p>
-                    
-                    <?php if ($libro['imagen_portada']): ?>
-                        <!-- Mostrar la imagen solo si hay una URL válida en el campo imagen_portada -->
-                        <img src="<?php echo htmlspecialchars($libro['imagen_portada']); ?>" alt="Portada de <?php echo htmlspecialchars($libro['titulo']); ?>" class="libro-imagen">
-                    <?php else: ?>
-                        <p>No hay imagen disponible.</p>
-                    <?php endif; ?>
-
-                    <p><strong>Reseña Personal:</strong> <?php echo htmlspecialchars($libro['reseña_personal']); ?></p>
-
-                    <!-- Formulario para borrar libro de la biblioteca -->
-                    <form method="POST" action="Perfil.php">
-                        <input type="hidden" name="libro_id" value="<?php echo htmlspecialchars($libro['id']); ?>">
-                        <button type="submit" class="btn-eliminar">Borrar de mi biblioteca</button>
-                    </form>
-                </div>
-            <?php endwhile; ?>
-        </div>
-    <?php else: ?>
-        <p>No tienes libros guardados en tu biblioteca personal.</p>
-    <?php endif; ?>
-
+                        <div class="informacion-libro">
+                            <h3><?php echo htmlspecialchars($libro['titulo']); ?></h3>
+                            <p><strong>Autor:</strong> <?php echo htmlspecialchars($libro['autor']); ?></p>
+                            <p><strong>Fecha de guardado:</strong> <?php echo htmlspecialchars($libro['fecha_guardado']); ?></p>
+                            <p><strong>Reseña Personal:</strong> <?php echo htmlspecialchars($libro['reseña_personal']); ?></p>
+                        </div>
+                        
+                        <!-- Formulario para borrar libro de la biblioteca -->
+                        <form method="POST" action="Perfil.php" class="formulario-libro">
+                            <input type="hidden" name="libro_id" value="<?php echo htmlspecialchars($libro['id']); ?>">
+                            <button type="submit" class="btn-eliminar">Borrar de mi biblioteca</button>
+                        </form>
+                    </div>
+                <?php endwhile; ?>
+        <?php else: ?>
+            <p>No tienes libros guardados en tu biblioteca personal.</p>
+        <?php endif; ?>
+    </section>
+    
 </body>
 </html>

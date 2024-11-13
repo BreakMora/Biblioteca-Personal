@@ -1,0 +1,75 @@
+body {
+  background-color: #F5F5F5;
+  margin: 0;
+}
+
+.login-contenedor {
+  max-width: 400px;
+  width: 100%;
+  margin: 50px auto;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+}
+
+.login-contenedor h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.login-contenedor .login-texto {
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.login-contenedor .google-login-boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  width: 100%;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  cursor: pointer;
+  padding: 10px;
+  box-sizing: border-box;  /* Para que el padding no afecte el tamaño total */
+}
+
+.login-contenedor .google-login-boton .logo {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #388E3C;
+  margin-right: 15px;
+  padding: 10px;
+  border-radius: 50%;
+}
+
+.login-contenedor .google-login-boton .logo img {
+  width: 20px; /* Tamaño del logo de Google */
+  height: 20px;
+}
+
+.login-contenedor .google-login-boton:hover {
+  background-color: #45A049;
+}
+
+.login-contenedor .google-login-boton:hover .logo {
+  background-color: #2C6E27;
+}
+
+.login-contenedor .google-login-boton span {
+  flex-grow: 1;
+  text-align: center;
+}
+
+

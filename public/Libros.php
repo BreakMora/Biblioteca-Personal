@@ -41,6 +41,13 @@
             echo "Error al agregar el libro.";
         }
     }
+
+    // Limitar la descripción de cada libro
+    if (isset($libros)) {
+        foreach ($libros as $libro) {
+            $libro->setDescripcion($libroController->limitarDescripcion($libro->getDescripcion()));
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -49,46 +56,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscar Libros</title>
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="http://localhost/Parcial4_Desarrollo/Biblioteca-Personal/public/assets/busqueda.css">
 </head>
 <body>
-    <a href="Logout.php">Cerrar sesión</a>
-    <a href="Perfil.php">Volver</a>
 
-    <h1>Buscar Libros en Google Books</h1>
+    <header>
+        <nav>
+            <a href="Perfil.php">Volver</a>
+        </nav>
+    </header>
 
-    <form method="GET" action="libros.php">
-        <input type="text" name="search" placeholder="Buscar por título o autor" required>
-        <button type="submit">Buscar</button>
-    </form>
+    <main>
+        <section class="seccion-busqueda">
+            <h1>Buscar Libros en Google Books</h1>
+            <form method="GET" action="libros.php">
+                <input type="text" name="search" placeholder="Buscar por título o autor" required>
+                <button type="submit">Buscar</button>
+            </form>
+        </section>
 
-    <?php if ($libros): ?>
-        <h2>Resultados de la búsqueda:</h2>
-        <div>
-            <?php foreach ($libros as $libro): ?>
-                <div class="libro">
-                    <img src="<?php echo htmlspecialchars($libro->getImagen()); ?>" alt="imagen">
-                    <h3><?php echo htmlspecialchars($libro->getTitulo()); ?></h3>
-                    <p><strong>Autores:</strong> <?php echo htmlspecialchars($libro->getAutores()); ?></p>
-                    <p><strong>Editorial:</strong> <?php echo htmlspecialchars($libro->getEditorial()); ?></p>
-                    <p><strong>Descripción:</strong> <?php echo htmlspecialchars($libro->getDescripcion()); ?></p>
+        <?php if ($libros): ?>
+            <section class="resultado-busqueda">
+                <h2>Resultados de la búsqueda:</h2>
+                <div class="contenedor-libros">
+                    <?php foreach ($libros as $libro): ?>
+                        <div class="tarjeta-libro">
+                            <img src="<?php echo htmlspecialchars($libro->getImagen()); ?>" alt="imagen" class="portada-libro">
+                            <div class="informacion-libro">
+                                <h3 class="titulo-libro"><?php echo htmlspecialchars($libro->getTitulo()); ?></h3>
+                                <p class="descripcion-libro"><strong>Autores:</strong> <?php echo htmlspecialchars($libro->getAutores()); ?></p>
+                                <p class="descripcion-libro"><strong>Editorial:</strong> <?php echo htmlspecialchars($libro->getEditorial()); ?></p>
+                                <p class="descripcion-libro"><strong>Descripción:</strong> <?php echo htmlspecialchars($libro->getDescripcion()); ?></p>
 
-                    <!-- Formulario para agregar libro a la biblioteca personal -->
-                    <form method="POST" action="libros.php">
-                        <input type="hidden" name="google_books_id" value="<?php echo htmlspecialchars($libro->getGoogleBooksId()); ?>">
-                        <input type="hidden" name="titulo" value="<?php echo htmlspecialchars($libro->getTitulo()); ?>">
-                        <input type="hidden" name="autor" value="<?php echo htmlspecialchars($libro->getAutores()); ?>">
-                        <input type="hidden" name="imagen" value="<?php echo $libro->getImagen(); ?>">
-                        <label for="resena">Escribe una reseña personal:</label>
-                        <textarea name="resena" placeholder="Escribe una reseña personal"></textarea>
-                        <button type="submit">Agregar</button>
-                    </form>
+                                <!-- Formulario para agregar libro a la biblioteca personal -->
+                                <form method="POST" action="libros.php">
+                                    <input type="hidden" name="google_books_id" value="<?php echo htmlspecialchars($libro->getGoogleBooksId()); ?>">
+                                    <input type="hidden" name="titulo" value="<?php echo htmlspecialchars($libro->getTitulo()); ?>">
+                                    <input type="hidden" name="autor" value="<?php echo htmlspecialchars($libro->getAutores()); ?>">
+                                    <input type="hidden" name="imagen" value="<?php echo $libro->getImagen(); ?>">
+                                    <textarea class="resena-usuario" name="resena" placeholder="Reseña personal"></textarea>
+                                    <button type="submit">Agregar</button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
-    <?php elseif (isset($query)): ?>
-        <p>No se encontraron libros para la búsqueda "<?php echo htmlspecialchars($query); ?>"</p>
-    <?php endif; ?>
-
+            </section>
+        <?php elseif (isset($query)): ?>
+            <p>No se encontraron libros para la búsqueda "<?php echo htmlspecialchars($query); ?>"</p>
+        <?php endif; ?>
+    </main>
+    
 </body>
 </html>

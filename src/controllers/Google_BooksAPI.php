@@ -9,7 +9,7 @@ if(!isset($_SESSION['access_token'])){
 class GoogleBooksAPI {
     private $api_url = "https://www.googleapis.com/books/v1/volumes/";
 
-    public function buscar_Libros($query, $maxResultados = 10) {
+    public function buscar_Libros($query, $maxResultados = 30) {
         $access_token = $_SESSION['access_token'];
         $url = $this->api_url . "?q=" . urlencode($query) . "&maxResults=" . $maxResultados;
 

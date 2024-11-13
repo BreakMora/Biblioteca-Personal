@@ -41,10 +41,14 @@ class LibroController {
 
     // Método para obtener los libros del usuario
     public function obtenerLibros($conn, $user_id) {
-        // Consultar libros de la base de datos para un usuario específico
-        $stmt = $conn->prepare("SELECT id, google_books_id, titulo, autor, imagen_portada, reseña_personal, fecha_guardado FROM libros_guardados WHERE user_id = ?");
-        $stmt->bind_param("i", $user_id);
-        $stmt->execute();
-        return $stmt->get_result();
+        // Llamamos al método del modelo para obtener los libros del usuario
+        return Libros::libroGuardado($conn, $user_id);
+    }
+
+
+    // Método para limitar la descripcion de los libros en la busqueda
+    public function limitarDescripcion($descripcion) {
+        // Uso el metodo del modelo para limitar la descripcion
+        return Libros::limitarDescripcion($descripcion);
     }
 }

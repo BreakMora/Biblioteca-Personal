@@ -1,0 +1,197 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+form input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    font-size: 16px;
+    width: 300px;
+    margin-right: 15px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+/* Estilo para el contenedor de los libros */
+.contenedor-libros {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilo para las tarjetas de libros */
+.tarjeta-libro {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 15px;
+    width: 350px;
+    height: 550px;
+    margin: 0 auto;
+}
+
+/* Imagen del libro */
+.portada-libro {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #f0f2f5;
+    transition: transform 0.3s ease;
+    margin-bottom: 15px;
+}
+
+/* Efecto hover en la tarjeta */
+.tarjeta-libro:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta-libro:hover .imagen-libro {
+    transform: scale(1.05);
+}
+
+/* Imagen de la portada del libro */
+.libro img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.titulo-libro {
+    text-align: center;
+}
+
+.descripcion-libro{
+    text-align: justify;
+}
+
+/* Estilo de la información del libro */
+.libro h3 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.libro p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.libro strong {
+    color: #3498db;
+}
+
+/* Estilo para el formulario de agregar reseña */
+.libro textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.libro button {
+    padding: 10px 5px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 5px;
+}
+
+.libro button:hover {
+    background-color: #2ecc71;
+}
+
+/* Estilo para cuando no se encuentran libros */
+p {
+    text-align: center;
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+/* Estilos generales para los enlaces en el header */
+header nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para los enlaces de "Cerrar sesión" y "Volver" */
+header nav a {
+    padding: 10px 20px;
+    background-color: #e74c3c; /* Rojo para el botón de cerrar sesión */
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Cambio de color y efecto hover */
+header nav a:hover {
+    background-color: #c0392b; /* Rojo más oscuro al pasar el mouse */
+    transform: scale(0.95); /* Efecto de presionar */
+    transition: transform 0.1s ease-in-out; /* Suaviza el efecto */
+}
+
+/* Estilo específico para el enlace de "Volver" */
+header nav a:nth-child(2) {
+    background-color: #3498db; /* Azul para el botón de volver */
+}
+
+/* efecto para el botón de "Volver" */
+header nav a:nth-child(2):hover {
+    background-color: #2980b9; /* Azul más oscuro al pasar el mouse */
+}

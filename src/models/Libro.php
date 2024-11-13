@@ -64,6 +64,24 @@
             return $stmt->execute();  // Ejecuta la consulta y retorna true si se realizo con exito.
         }
 
+        public static function limitarDescripcion($descripcion, $limitePalabras = 30) {
+            $palabras = explode(' ', $descripcion);
+            if (count($palabras) > $limitePalabras) {
+                $descripcionCorta = implode(' ', array_slice($palabras, 0, $limitePalabras)) . '...';
+                return $descripcionCorta;
+            }
+            return $descripcion; //retorna la descripcion resumida
+        }
+
+        // Método para obtener los libros guardados por el usuario
+        public static function libroGuardado($conn, $user_id) {
+            $stmt = $conn->prepare("SELECT id, google_books_id, titulo, autor, imagen_portada, reseña_personal, fecha_guardado FROM libros_guardados WHERE user_id = ?"); // Consultamos la BD para obtener los libros guardados por el usuario
+            $stmt->bind_param("i", $user_id);  // Vinculamos el parámetro con el ID del usuario
+            $stmt->execute();
+            
+            return $stmt->get_result();  // Retornamos el resultado de la consulta
+        }
+
         // Getters los datos del libro
         public function getGoogleBooksId() {
             return $this->google_books_id;
@@ -83,6 +101,10 @@
 
         public function getDescripcion() {
             return $this->descripcion;
+        }
+
+        public function setDescripcion($descripcion) { // Asigna la descripcion resumida
+            $this->descripcion = $descripcion;
         }
 
         public function getImagen() {
