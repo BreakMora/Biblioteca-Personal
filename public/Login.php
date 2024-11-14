@@ -13,7 +13,7 @@
 
         <a href="../src/controllers/Google_OAuth.php" class="google-login-boton" aria-label="Iniciar sesión con Google">
             <div class="logo">
-                <img src="https://w7.pngwing.com/pngs/882/225/png-transparent-google-logo-google-logo-google-search-icon-google-text-logo-business-thumbnail.png" alt="Google Logo">
+                <img class="logo-google" src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google Logo">
             </div>
             <span>Inicia sesión con Google</span>
         </a>

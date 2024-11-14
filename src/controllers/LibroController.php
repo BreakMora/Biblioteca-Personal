@@ -41,7 +41,7 @@ class LibroController {
 
     // Método para obtener los libros del usuario
     public function obtenerLibros($conn, $user_id) {
-        // Llamamos al método del modelo para obtener los libros del usuario
+        // Uso el método del modelo para obtener los libros del usuario
         return Libros::libroGuardado($conn, $user_id);
     }
 

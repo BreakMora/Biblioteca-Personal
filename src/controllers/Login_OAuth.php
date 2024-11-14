@@ -16,24 +16,28 @@ if (isset($_GET['code'])) {
     // URL para el intercambio del código por un token
     $token_url = 'https://oauth2.googleapis.com/token';
 
-    // Configuración de la solicitud de token
+    // Datos para la solicitud de token
     $token_data = [
-        'code' => $code,
-        'client_id' => $client_id,
-        'client_secret' => $client_secret,
-        'redirect_uri' => $redirect_uri,
-        'grant_type' => 'authorization_code'
+        'code' => $code, // Código de autorización recibido.
+        'client_id' => $client_id, // ID del cliente de Google.
+        'client_secret' => $client_secret, // Secreto del cliente de Google.
+        'redirect_uri' => $redirect_uri, // URL de redirección.
+        'grant_type' => 'authorization_code' // Tipo de autorización.
     ];
 
-    // Enviar la solicitud de token
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $token_url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($token_data));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $response = curl_exec($ch);
-    curl_close($ch);
+    // Configuración de opciones de contexto HTTP para enviar la solicitud POST
+    $opciones = [
+        'http' => [
+            'method' => 'POST', // Especifica la solicitud POST.
+            'header' => 'Content-type: application/x-www-form-urlencoded', // El contenido para la solicitud.
+            'content' => http_build_query($token_data) // Convierte los datos del token a formato URL.
+        ]
+    ];
+    
+    $contexto = stream_context_create($opciones); // Se crea el contexto para la solicitud HTTP.
+
+    // Enviar la solicitud de token y recibir la respuesta
+    $response = file_get_contents($token_url, false, $contexto);
 
     // Decodificar la respuesta JSON
     $token_response = json_decode($response, true);
@@ -52,14 +56,15 @@ if (isset($_GET['code'])) {
             // Guardar información del usuario en la sesión
             $_SESSION['user'] = $user_data;
 
+            // Se crea una instancia del controlador de usuario para guardar la información en la base de datos.
             $usuarioController = new UsuarioController($conn);
             $email = $user_data['email'];
             $nombre = $user_data['name'];
             $google_id = $user_data['id'];
             
-            $usuarioController->guardar_Usuario($email, $nombre, $google_id);
+            $usuarioController->guardar_Usuario($email, $nombre, $google_id); // Guarda los datos del usuario en la base de datos.
 
-            header('Location: ../../public/Perfil.php');
+            header('Location: ../../public/index.php'); // Redirige al usuario a la página principal
             exit();
 
         } else {

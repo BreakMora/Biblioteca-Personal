@@ -99,8 +99,12 @@ h3, h4 {
     color: #3498db;
 }
 
+.formulario-libro {
+    align-self: center;
+}
+
 /* Estilar el boton de borrar */
-.formulario-borrar button {
+button {
     background-color: #e74c3c;
     color: white;
     border: none;
@@ -110,7 +114,7 @@ h3, h4 {
     transition: background-color 0.3s ease;
 }
 
-.formulario-borrar button:hover {
+button:hover {
     background-color: #c0392b;
 }
 

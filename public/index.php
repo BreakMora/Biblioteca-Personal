@@ -1,8 +1,12 @@
 <?php
+
+    session_start();
+
     require_once '../src/config/Config.php';
     require_once '../src/controllers/LibroController.php';+
     require_once '../src/controllers/UsuarioController.php';
 
+    
     if (!isset($_SESSION['user'])) {
         header('Location: Login.php');
         exit();
@@ -26,10 +30,14 @@
     if (isset($_POST['libro_id'])) {
         $libro_id = (int) $_POST['libro_id'];
 
-        if ($libro_id > 0) {
-            $libroController->eliminar_Libro($conn, $libro_id, $id); // Llamamos al controlador para eliminar el libro
-            header('Location: Perfil.php'); // Regresar al perfil después de eliminar
-            exit();
+        $resultado = $libroController->eliminar_Libro($conn, $libro_id, $id); // Llamamos al controlador para eliminar el libro
+
+        if($resultado){
+            ?>
+            <script>
+                window.alert("Libro eliminado de tu biblioteca.");
+            </script>
+            <?php
         }
     }
     //Obtener los libros asociados al usuario autenticado

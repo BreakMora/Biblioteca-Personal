@@ -36,9 +36,17 @@
         $resultado = $libroController->agregar_Libro($conn, $googleBooksId, $titulo, $autor, $imagen, $reseña, $user_id); // se envian los datos el metodo agregar_Libro para agregarlo
 
         if ($resultado) {
-            echo "Libro agregado a tu biblioteca.";
+            ?>
+            <script>
+                window.alert("Libro agregado en tu biblioteca.");
+            </script>
+            <?php
         } else {
-            echo "Error al agregar el libro.";
+            ?>
+            <script>
+                window.alert("Error no se guardo el libro en tu biblioteca.");
+            </script>
+            <?php
         }
     }
 
@@ -62,7 +70,7 @@
 
     <header>
         <nav>
-            <a href="Perfil.php">Volver</a>
+            <a href="index.php">Volver</a>
         </nav>
     </header>
 
@@ -89,7 +97,7 @@
                                 <p class="descripcion-libro"><strong>Descripción:</strong> <?php echo htmlspecialchars($libro->getDescripcion()); ?></p>
 
                                 <!-- Formulario para agregar libro a la biblioteca personal -->
-                                <form method="POST" action="libros.php">
+                                <form method="POST" action="libros.php" class="footer-tarjeta">
                                     <input type="hidden" name="google_books_id" value="<?php echo htmlspecialchars($libro->getGoogleBooksId()); ?>">
                                     <input type="hidden" name="titulo" value="<?php echo htmlspecialchars($libro->getTitulo()); ?>">
                                     <input type="hidden" name="autor" value="<?php echo htmlspecialchars($libro->getAutores()); ?>">
